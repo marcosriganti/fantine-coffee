@@ -1,25 +1,46 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Layout from './components/layout';
+import List from './pages/List.js';
+import ProductWrapped from './pages/Product.js';
+import ProfileWrapper from './pages/Profile.js';
+import { ThemeProvider } from '@material-ui/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+// get our fontawesome imports
+
+const theme = createMuiTheme({
+  typography: {
+    fontFamily: 'Karla, Arial, Helvetica',
+  },
+  overrides: {
+    MuiCssBaseline: {
+      '@global': {
+        '@font-face': 'Karla',
+      },
+    },
+  },
+  palette: {
+    primary: { main: '#308f9a' },
+    secondary: { main: '#fff' }, // This is just green.A700 as hex.
+  },
+});
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router basename={'/coffee'}>
+      <ThemeProvider theme={theme}>
+        <Layout>
+          <Switch>
+            <Route path="/product/:code" component={ProductWrapped} />
+            <Route path="/profile/:userId" component={ProfileWrapper} />
+            <Route path="/" title={'Listing'}>
+              <List />
+            </Route>
+          </Switch>
+        </Layout>
+      </ThemeProvider>
+    </Router>
   );
 }
 
